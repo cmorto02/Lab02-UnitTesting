@@ -39,7 +39,6 @@ namespace Lab02_UnitTesting
                 if (chosen == 1)
                 {
                     decimal currentBalance = Balance(balance);
-                    Console.WriteLine(currentBalance);
                 }
                 if (chosen == 2)
                 {
@@ -73,7 +72,8 @@ namespace Lab02_UnitTesting
                 }
                 if (chosen == 3)
                 {
-                    Deposit(balance);
+                    //Deposit(balance);
+                    return 0;
                 }
                 if (chosen == 4)
                 {
@@ -88,18 +88,19 @@ namespace Lab02_UnitTesting
             }
  
         }
-        static decimal Balance(decimal balance)
+        public static decimal Balance(decimal balance)
         {
             Console.WriteLine(balance);
             return 0;
         }
         public static decimal Withdraw(decimal balance, decimal withdrawal)
         {
-            return balance - withdrawal;
+            decimal change = balance - withdrawal;
+            return change;
         }
-        static decimal Deposit(decimal balance)
-        {
+        //public static decimal Deposit(decimal balance)
+        //{
 
-        }
+        //}
     }
 }
