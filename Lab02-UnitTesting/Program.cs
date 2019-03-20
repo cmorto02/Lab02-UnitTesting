@@ -9,10 +9,11 @@ namespace Lab02_UnitTesting
             decimal balance = 2400.00M;
             Console.WriteLine("Welcome to Bank Name.");
             Console.WriteLine("How can we help you today?");
-            Choices();
+            decimal change = Choices(balance);
+            balance += change;
 
         }
-        static void Choices()
+        static decimal Choices(decimal balance)
         {
             try
             {
@@ -37,18 +38,18 @@ namespace Lab02_UnitTesting
                 }
                 if (chosen == 4)
                 {
-                    exit
+                    return 0;
                 }
             }
             catch (Exception)
             {
                 Console.WriteLine("We could not understand your selection, please try again.");
-                Choices();
+                Choices(balance);
             }
         }
         static decimal Balance(decimal balance)
         {
-
+            return balance;
         }
         static decimal Withdraw(decimal balance)
         {
