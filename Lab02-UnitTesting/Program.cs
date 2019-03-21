@@ -9,98 +9,79 @@ namespace Lab02_UnitTesting
             try
             {
                 decimal balance = 2400.00M;
-                Console.WriteLine("Welcome to Bank Name.");
+                Console.WriteLine("Welcome to NotABank.");
                 Console.WriteLine("How can we help you today?");
-                decimal change = Choices(balance);
-                balance += change;
-                if (change != 0)
-                {
-                    Console.WriteLine($"Your balance is { balance}.");
-                }
+                decimal newBalance = SwitchChoices(balance);
+                balance = newBalance;
+                Console.WriteLine("Would you like to do anything else?");
+                SwitchChoices(balance);
             }
             catch (Exception)
             {
-
-                throw;
+                Console.WriteLine("We are sorry, there was an error.");
             }
-            
-
+            finally
+            {
+                Console.WriteLine("Thank you for using NotABank");
+            }
         }
-        static decimal Choices(decimal balance)
+        static decimal SwitchChoices(decimal balance)
         {
-            try
+            Console.WriteLine("Would you like to:");
+            Console.WriteLine("1. View your balance.");
+            Console.WriteLine("2. Make a withdrawal.");
+            Console.WriteLine("3. Make a deposit.");
+            Console.WriteLine("4. Exit.");
+            string choice = Console.ReadLine();
+            int option = Convert.ToInt16(choice);
+            switch (option)
             {
-                Console.WriteLine("1. View Balance");
-                Console.WriteLine("2. Withdraw");
-                Console.WriteLine("3. Deposit");
-                Console.WriteLine("4. Exit");
-                string choice = Console.ReadLine();
-                int chosen = Convert.ToInt32(choice);
-                if (chosen == 1)
-                {
-                    decimal currentBalance = Balance(balance);
-                }
-                if (chosen == 2)
-                {
-                    try
-                    {
-                        Console.WriteLine("How much would you like to withdraw?");
-                        string withdrawal = Console.ReadLine();
-                        decimal decimalWithdrawal = Convert.ToDecimal(withdrawal);
-                        Withdraw(balance, decimalWithdrawal);
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("I'm sorry, we could not understand your selection.");
-                        Console.WriteLine("To return to the previous menu, or to exit, please type 'return' or 'exit', respectively.");
-                        Console.WriteLine("How much would you like to withdraw?");
-                        string withdrawal = Console.ReadLine();
-                        if (withdrawal == "return")
-                        {
-                            Choices(balance);
-                        }
-                        if (withdrawal == "exit")
-                        {
-                            return 0;
-                        }
-                        else
-                        {
-                            decimal decimalWithdrawal = Convert.ToDecimal(withdrawal);
-                            Withdraw(balance, decimalWithdrawal);
-                        }
-                    }
-                }
-                if (chosen == 3)
-                {
-                    //Deposit(balance);
+                case 1:
+                    decimal bal = Balance(balance);
+                    return bal;
+                case 2:
+                    Console.WriteLine("How much would you like to withdraw?");
+                    string withdrawal = Console.ReadLine();
+                    decimal decimalWithdrawal = Convert.ToDecimal(withdrawal);
+                    decimal withdrawn = Withdraw(balance, decimalWithdrawal);
+                    return withdrawn;
+                case 3:
+                    Console.WriteLine("How much would you like to deposit?");
+                    string depositing = Console.ReadLine();
+                    decimal decimaldepositing = Convert.ToDecimal(depositing);
+                    decimal deposited = Deposit(balance, decimaldepositing);
+                    return deposited;
+                case 4:
                     return 0;
-                }
-                if (chosen == 4)
-                {
+                default:
+                    Console.WriteLine("Im sorry we did not understand, please choose again.");
                     return 0;
-                }
             }
-            catch (FormatException  e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("We could not understand your selection, please try again.");
-                Choices(balance);
-            }
- 
         }
         public static decimal Balance(decimal balance)
         {
             Console.WriteLine(balance);
-            return 0;
+            return balance;
         }
         public static decimal Withdraw(decimal balance, decimal withdrawal)
         {
-            decimal change = balance - withdrawal;
-            return change;
+            if (withdrawal>0)
+            {
+                decimal change = balance - withdrawal;
+                Console.WriteLine($"Your new balance is {change}");
+                return change;
+            }
+            else
+            {
+                Console.WriteLine("Please enter a positive number");
+                SwitchChoices(balance);
+                return 0;
+            }
+            
         }
-        //public static decimal Deposit(decimal balance)
-        //{
-
-        //}
+        public static decimal Deposit(decimal balance, decimal deposit)
+        {
+            return 0;
+        }
     }
 }

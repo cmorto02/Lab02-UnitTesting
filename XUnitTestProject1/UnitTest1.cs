@@ -16,5 +16,15 @@ namespace XUnitTestProject1
 
             Assert.Equal(2340.00M, result);
         }
+        [Fact]
+        public void ICanNotWithdrawANegativeFromTheBalance()
+        {
+            decimal mockBalance = 2400.00M;
+            decimal mockWithdraw = -60.00M;
+
+            decimal result = Withdraw(mockBalance, mockWithdraw);
+
+            Assert.Equal(2340.00M, result);
+        }
     }
 }
