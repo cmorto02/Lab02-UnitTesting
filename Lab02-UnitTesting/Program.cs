@@ -6,15 +6,21 @@ namespace Lab02_UnitTesting
     {
         static void Main(string[] args)
         {
+            decimal balance = 2400.00M;
             try
             {
-                decimal balance = 2400.00M;
+                bool run = true;
                 Console.WriteLine("Welcome to NotABank.");
                 Console.WriteLine("How can we help you today?");
-                decimal newBalance = SwitchChoices(balance);
-                balance = newBalance;
-                Console.WriteLine("Would you like to do anything else?");
-                SwitchChoices(balance);
+                while (run == true)
+                {
+                    decimal newBalance = Menu(balance);
+                    if (newBalance == -1)
+                    {
+                        run = false;
+                    }
+                    balance = newBalance;
+                }
             }
             catch (Exception)
             {
@@ -25,63 +31,97 @@ namespace Lab02_UnitTesting
                 Console.WriteLine("Thank you for using NotABank");
             }
         }
-        static decimal SwitchChoices(decimal balance)
+        /// <summary>
+        /// This method displays the selection menu and then through a switch statement displays the balance, calls methods, or exits the app.
+        /// </summary>
+        /// <param name="balance">this is the beginning balance declared at the beginning of Main.</param>
+        /// <returns>Returns the new balance, or -1 to exit the while loop in Main.</returns>
+        static decimal Menu(decimal balance)
         {
-            Console.WriteLine("Would you like to:");
             Console.WriteLine("1. View your balance.");
-            Console.WriteLine("2. Make a withdrawal.");
-            Console.WriteLine("3. Make a deposit.");
+            Console.WriteLine("2. Withdraw.");
+            Console.WriteLine("3. Deposit.");
             Console.WriteLine("4. Exit.");
-            string choice = Console.ReadLine();
-            int option = Convert.ToInt16(choice);
+            Console.WriteLine("Please make a selection.");
+            string selection = Console.ReadLine();
+            int option = Convert.ToInt32(selection);
             switch (option)
             {
                 case 1:
-                    decimal bal = Balance(balance);
-                    return bal;
+                    Console.WriteLine($"Your balance is {balance}");
+                    return balance;
                 case 2:
-                    Console.WriteLine("How much would you like to withdraw?");
-                    string withdrawal = Console.ReadLine();
-                    decimal decimalWithdrawal = Convert.ToDecimal(withdrawal);
-                    decimal withdrawn = Withdraw(balance, decimalWithdrawal);
-                    return withdrawn;
+                    try
+                    {
+                        Console.WriteLine("How much would you like to withdraw?");
+                        string amount = Console.ReadLine();
+                        decimal withdrawing = Convert.ToDecimal(amount);
+                        decimal amountAfterWithdrawal = Withdraw(balance, withdrawing);
+                        return amountAfterWithdrawal;
+                    }
+                    catch (FormatException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        throw;
+                    }
                 case 3:
-                    Console.WriteLine("How much would you like to deposit?");
-                    string depositing = Console.ReadLine();
-                    decimal decimaldepositing = Convert.ToDecimal(depositing);
-                    decimal deposited = Deposit(balance, decimaldepositing);
-                    return deposited;
+                    try
+                    {
+                        Console.WriteLine("How much would you like to deposit?");
+                        string amount2 = Console.ReadLine();
+                        decimal depositing = Convert.ToDecimal(amount2);
+                        decimal amountAfterDeposit = Deposit(balance, depositing);
+                        return amountAfterDeposit;
+                    }
+                    catch (FormatException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        throw;
+                    }
                 case 4:
-                    return 0;
+                    return -1;
                 default:
-                    Console.WriteLine("Im sorry we did not understand, please choose again.");
-                    return 0;
+                    Console.WriteLine("I'm sorry, we did not understand your selection. Please try again");
+                    return balance;
             }
         }
-        public static decimal Balance(decimal balance)
+        /// <summary>
+        /// This method determines whether you have enough funds or if the withdrawal amount is negative, if it is not and you have the funds, it subtracts the withdrawal amount from the balance and then returns the new balance.
+        /// </summary>
+        /// <param name="balance">This is declared in Main and subsequently modified by this and the deposit method.</param>
+        /// <param name="amount">This is a user defined amount to withdraw.</param>
+        /// <returns>Returns the new balance.</returns>
+        public static decimal Withdraw(decimal balance, decimal amount)
         {
-            Console.WriteLine(balance);
-            return balance;
-        }
-        public static decimal Withdraw(decimal balance, decimal withdrawal)
-        {
-            if (withdrawal>0)
+            if (balance>amount && amount>0)
             {
-                decimal change = balance - withdrawal;
-                Console.WriteLine($"Your new balance is {change}");
-                return change;
+                Console.WriteLine($"Your new balance is {balance-amount}");
+                return balance - amount;
             }
             else
             {
-                Console.WriteLine("Please enter a positive number");
-                SwitchChoices(balance);
-                return 0;
+                Console.WriteLine("Im sorry, but the number you entered is invalid or larger than your available funds.");
+                return balance;
             }
-            
         }
-        public static decimal Deposit(decimal balance, decimal deposit)
+        /// <summary>
+        /// This method determines whether you are trying to deposit a negative, if you are not then it adds the deposit amount to the balance and then returns the new balance.
+        /// </summary>
+        /// <param name="balance">This is declared in Main and subsequently modified by this and the withdraw method.</param>
+        /// <param name="amount">This is a user defined method to deposit.</param>
+        /// <returns>Returns the new balance.</returns>
+        public static decimal Deposit(decimal balance, decimal amount)
         {
-            return 0;
+            if (amount > 0)
+            {
+                Console.WriteLine($"Your new balance is {balance + amount}");
+                return balance + amount;
+            }
+            else
+            {
+                Console.WriteLine("Im sorry, but the number you entered is invalid.");
+                return balance;
+            }
         }
     }
 }
